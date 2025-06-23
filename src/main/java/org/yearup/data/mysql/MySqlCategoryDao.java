@@ -28,7 +28,8 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
         String allCategorySql = """
                 SELECT
                 category_id,
-                name
+                name,
+                description
                 FROM
                 categories
                 """;
@@ -40,6 +41,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
                 Category category = new Category();
                 category.setCategoryId(resultSet.getInt(1));
                 category.setName(resultSet.getString(2));
+                category.setDescription(resultSet.getString(3));
                 categories.add(category);
             }
 
@@ -55,7 +57,8 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
         String idByQuery = """
                 SELECT
                 category_id,
-                name
+                name,
+                description
                 FROM
                 categories
                 WHERE category_id = ?
@@ -71,6 +74,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
                     Category category = new Category();
                     category.setCategoryId(resultSet.getInt(1));
                     category.setName(resultSet.getString(2));
+                    category.setDescription(resultSet.getString(3));
                     return category;
                 }
             }
