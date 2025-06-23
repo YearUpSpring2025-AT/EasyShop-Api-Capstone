@@ -6,10 +6,7 @@ import org.yearup.data.CategoryDao;
 import org.yearup.models.Category;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +27,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
 
         String allCategorySql = """
                 SELECT
-                category_id
+                category_id,
                 name
                 FROM
                 categories
@@ -41,8 +38,8 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
         ){
             while (resultSet.next())  {
                 Category category = new Category();
-                category.setCategoryId(resultSet.getInt("category_id"));
-                category.setName(resultSet.getString("name"));
+                category.setCategoryId(resultSet.getInt(1));
+                category.setName(resultSet.getString(2));
                 categories.add(category);
             }
 
@@ -57,7 +54,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     {
         String idByQuery = """
                 SELECT
-                category_id
+                category_id,
                 name
                 FROM
                 categories
@@ -71,9 +68,10 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
             statement.setInt(1, categoryId);
             try (ResultSet resultSet = statement.executeQuery()){
                 if (resultSet.next()){
-                    int categoryId = resultSet.getInt(1);
-                    String name = resultSet.getString(2);
-                    Category category = new Category(categoryId, name);
+                    Category category = new Category();
+                    category.setCategoryId(resultSet.getInt(1));
+                    category.setName(resultSet.getString(2));
+                    return category;
                 }
             }
 
@@ -88,6 +86,23 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     public Category create(Category category)
     {
         // create a new category
+        String createSql = "INSERT INTO categories (name) VALUE (?)";
+
+        try (Connection connection = basicDataSource.getConnection();
+             PreparedStatement statement =  connection.prepareStatement(createSql, Statement.RETURN_GENERATED_KEYS);
+        ){
+            statement.setString(1, category.getName());
+            statement.executeUpdate();
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int generatedId = generatedKeys.getInt(1);
+                    category.setCategoryId(generatedId);
+                    return category;
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return null;
     }
 
@@ -95,12 +110,35 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     public void update(int categoryId, Category category)
     {
         // update category
+        String updateSql = "UPDATE categories AET  name = ? WHERE category_id = ?";
+
+        try (Connection connection = basicDataSource.getConnection();
+             PreparedStatement statement =  connection.prepareStatement(updateSql);
+        ){
+            statement.setString(1, category.getName());
+            statement.setInt(2, categoryId);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Override
     public void delete(int categoryId)
     {
         // delete category
+        String deleteSql = "DELETE FROM categories WHERE category_id = ?";
+
+        try (Connection connection = basicDataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(deleteSql);
+        ){
+            statement.setInt(1, categoryId);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     private Category mapRow(ResultSet row) throws SQLException
