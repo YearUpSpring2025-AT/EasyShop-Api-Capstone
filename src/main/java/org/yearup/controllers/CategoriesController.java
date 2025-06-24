@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.yearup.data.CategoryDao;
 import org.yearup.data.ProductDao;
 import org.yearup.models.Category;
@@ -43,7 +44,23 @@ public class CategoriesController
     public Category getById(@PathVariable int id)
     {
         // get the category by id
-        return categoryDao.getById(id);
+
+        //fix this so that if it does not fine a category, it throws an exception that results
+        //in a 404 status code...
+        try
+        {
+            var category = categoryDao.getById(id);
+
+            if(category == null)
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+            return category;
+        }
+        catch(Exception ex)
+        {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
+//        return categoryDao.getById(id);
     }
 
     // the url to return all products in category 1 would look like this
@@ -95,7 +112,7 @@ public class CategoriesController
 
     // add annotation to call this method for a DELETE action - the url path must include the categoryId
     // add annotation to ensure that only an ADMIN can call this function
-    @RequestMapping(path = "/{id}/delete", method = RequestMethod.DELETE)
+    @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteCategory(@PathVariable int id)

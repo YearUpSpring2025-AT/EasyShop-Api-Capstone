@@ -90,12 +90,13 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     public Category create(Category category)
     {
         // create a new category
-        String createSql = "INSERT INTO categories (name) VALUE (?)";
+        String createSql = "INSERT INTO categories (name, description) VALUE (?, ?)";
 
         try (Connection connection = basicDataSource.getConnection();
              PreparedStatement statement =  connection.prepareStatement(createSql, Statement.RETURN_GENERATED_KEYS);
         ){
             statement.setString(1, category.getName());
+            statement.setString(2,category.getDescription());
             statement.executeUpdate();
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
@@ -114,13 +115,14 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     public void update(int categoryId, Category category)
     {
         // update category
-        String updateSql = "UPDATE categories SET name = ? WHERE category_id = ?";
+        String updateSql = "UPDATE categories SET name = ?, description = ? WHERE category_id = ?";
 
         try (Connection connection = basicDataSource.getConnection();
              PreparedStatement statement =  connection.prepareStatement(updateSql);
         ){
             statement.setString(1, category.getName());
-            statement.setInt(2, categoryId);
+            statement.setString(2, category.getDescription());
+            statement.setInt(3, categoryId);
             statement.executeUpdate();
         } catch (Exception e) {
             throw new RuntimeException(e);
