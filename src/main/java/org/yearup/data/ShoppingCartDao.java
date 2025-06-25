@@ -8,7 +8,7 @@ public interface ShoppingCartDao
 {
     ShoppingCart getByUserId(int userId);
     // add additional method signatures here
-//    void addItem(int userId, int productId, int quantity);
-//    void removeItem(int userId, int productId);
-//    void clearCart(int userId);
+    void addItem(int userId, int productId, int quantity);
+    void removeItem(int userId, int productId);
+    void clearCart(int userId);
 }

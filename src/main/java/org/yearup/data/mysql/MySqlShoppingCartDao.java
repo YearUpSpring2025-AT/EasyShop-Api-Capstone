@@ -60,7 +60,55 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
         }
         return cart;
     }
+    @Override
+    public void addItem(int userId, int productId, int quantity){
 
+        String sql = """
+                INSERT INTO shopping_cart (user_id, product_id, quantity)
+                VALUES (?, ?, ?);
+                ON DUPLICATE KEY UPDATE quantity = quantity + ?
+                """;
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql);
+        ){
+            statement.setInt(1, userId);
+            statement.setInt(2, productId);
+            statement.setInt(3, quantity);
+            statement.setInt(4, quantity);
+            statement.executeUpdate();
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    };
+    @Override
+    public void removeItem(int userId, int productId){
+        String sql = "DELETE FROM shopping_cart WHERE user_id = ? AND product_id = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql);
+        ){
+            statement.setInt(1, userId);
+            statement.setInt(2, productId);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    };
+    @Override
+    public void clearCart(int userId){
+        String sql = "DELETE FROM shopping_cart WHERE user_id = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql);
+        ){
+            statement.setInt(1, userId);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    };
     protected static Product mapRow(ResultSet row) throws SQLException
     {
         int productId = row.getInt("product_id");
