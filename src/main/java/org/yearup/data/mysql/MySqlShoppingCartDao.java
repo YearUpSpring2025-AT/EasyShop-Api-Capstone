@@ -1,5 +1,6 @@
 package org.yearup.data.mysql;
 
+import org.springframework.stereotype.Component;
 import org.yearup.data.ProductDao;
 import org.yearup.data.ShoppingCartDao;
 import org.yearup.models.Product;
@@ -7,10 +8,13 @@ import org.yearup.models.ShoppingCart;
 import org.yearup.models.ShoppingCartItem;
 
 import javax.sql.DataSource;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
+@Component
 public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDao {
 
     private ProductDao productDao;
@@ -26,7 +30,8 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
                 SELECT
                 *
                 FROM
-                shopping_cart
+                shopping_cart sc
+                JOIN products p ON sc.product_id = p.product_id
                 WHERE
                 user_id = ?
                 """;
@@ -38,13 +43,14 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
-                int productId = rs.getInt(1);
-                int quantity = rs.getInt(2);
+                Product product = mapRow(rs);
+                int quantity = rs.getInt("quantity");
 
-                Product product = productDao.getById(productId);
 
-                if (product == null) {
-                    ShoppingCartItem item = new ShoppingCartItem(product, quantity);
+                if (product != null) {
+                    ShoppingCartItem item = new ShoppingCartItem();
+                    item.setProduct(product);
+                    item.setQuantity(quantity);
                     cart.add(item);
                 }
             }
@@ -54,4 +60,21 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
         }
         return cart;
     }
+
+    protected static Product mapRow(ResultSet row) throws SQLException
+    {
+        int productId = row.getInt("product_id");
+        String name = row.getString("name");
+        BigDecimal price = row.getBigDecimal("price");
+        int categoryId = row.getInt("category_id");
+        String description = row.getString("description");
+        String color = row.getString("color");
+        int stock = row.getInt("stock");
+        boolean isFeatured = row.getBoolean("featured");
+        String imageUrl = row.getString("image_url");
+
+        return new Product(productId, name, price, categoryId, description, color, stock, isFeatured, imageUrl);
+    }
+
+
 }
