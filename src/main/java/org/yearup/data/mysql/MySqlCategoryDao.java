@@ -13,11 +13,9 @@ import java.util.List;
 @Component
 public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
 {
-    private BasicDataSource basicDataSource;
 
-    public MySqlCategoryDao(DataSource dataSource, BasicDataSource basicDataSource) {
+    public MySqlCategoryDao(DataSource dataSource) {
         super(dataSource);
-        this.basicDataSource = basicDataSource;
     }
 
     @Override
@@ -33,7 +31,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
                 FROM
                 categories
                 """;
-        try (Connection connection = basicDataSource.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(allCategorySql);
              ResultSet resultSet = statement.executeQuery();
         ){
@@ -64,7 +62,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
                 WHERE category_id = ?
                 """;
 
-        try (Connection connection = basicDataSource.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(idByQuery);
 
         ){
@@ -92,7 +90,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
         // create a new category
         String createSql = "INSERT INTO categories (name, description) VALUE (?, ?)";
 
-        try (Connection connection = basicDataSource.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement statement =  connection.prepareStatement(createSql, Statement.RETURN_GENERATED_KEYS);
         ){
             statement.setString(1, category.getName());
@@ -117,7 +115,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
         // update category
         String updateSql = "UPDATE categories SET name = ?, description = ? WHERE category_id = ?";
 
-        try (Connection connection = basicDataSource.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement statement =  connection.prepareStatement(updateSql);
         ){
             statement.setString(1, category.getName());
@@ -136,7 +134,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
         // delete category
         String deleteSql = "DELETE FROM categories WHERE category_id = ?";
 
-        try (Connection connection = basicDataSource.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(deleteSql);
         ){
             statement.setInt(1, categoryId);

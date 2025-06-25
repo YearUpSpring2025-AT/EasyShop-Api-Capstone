@@ -45,20 +45,21 @@ public class CategoriesController
     {
         // get the category by id
 
-        //fix this so that if it does not fine a category, it throws an exception that results
+        //fix this so that if it does not find a category, it throws an exception that results
         //in a 404 status code...
         try
         {
             var category = categoryDao.getById(id);
 
-            if(category == null)
+            if(category == null) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            }
 
             return category;
         }
-        catch(Exception ex)
+        catch(ResponseStatusException ex)
         {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+            throw ex;
         }
 //        return categoryDao.getById(id);
     }
