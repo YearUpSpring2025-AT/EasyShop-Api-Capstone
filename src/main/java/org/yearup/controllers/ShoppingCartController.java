@@ -61,14 +61,16 @@ public class ShoppingCartController
     // https://localhost:8080/cart/products/15 (15 is the productId to be added
 
     @PostMapping("/products/{productId}")
-    public void addProductToCart(@PathVariable int productId, Principal  principal){
+    public ShoppingCart addProductToCart(@PathVariable int productId, Principal  principal) {
 
         try {
             String userName = principal.getName();
             User user = userDao.getByUserName(userName);
 
             shoppingCartDao.addItem(user.getId(), productId, 1);
-        } catch (Exception e){
+
+            return shoppingCartDao.getByUserId(user.getId());
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to add product to cart.");
         }
     }
@@ -95,15 +97,18 @@ public class ShoppingCartController
     // add a DELETE method to clear all products from the current users cart
     // https://localhost:8080/cart
     @DeleteMapping("")
-    public void clearCart(Principal principal){
+    public ShoppingCart clearCart(Principal principal){
         try {
             String userName = principal.getName();
             User user = userDao.getByUserName(userName);
 
             shoppingCartDao.clearCart(user.getId());
+            return shoppingCartDao.getByUserId(user.getId());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
+
     }
 
 }
