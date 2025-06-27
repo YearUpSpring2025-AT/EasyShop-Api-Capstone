@@ -34,7 +34,7 @@ src
 
 ## 🖼️ Screenshots
 
-You can download all screenshots [here](sandbox:/mnt/data/easyshop-readme-images) and upload them to your README or GitHub repo.
+You can download all screenshots [here](https://github.com/YearUpSpring2025-AT/EasyShop-Api-Capstone/blob/main/easyshop-readme-images.zip) and upload them to your README or GitHub repo.
 
 **Included Images:**
 
