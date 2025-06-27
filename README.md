@@ -34,16 +34,16 @@ src
 
 ## 🖼️ Screenshots
 
-You can download all screenshots [here](https://github.com/YearUpSpring2025-AT/EasyShop-Api-Capstone/blob/main/easyshop-readme-images.zip) and upload them to your README or GitHub repo.
+Below are some screenshots highlighting the core functionality and challenges faced during development:
 
-**Included Images:**
+- **easyshop-ui-home.png** – Homepage interface with product filters and category options  
+- **add-to-cart-error.png** – Error notification when adding items to the cart fails  
+- **postman-401-error.png** – Unauthorized access response due to missing or invalid JWT token  
+- **postman-405-error.png** – Method not allowed error triggered by incorrect HTTP method  
+- **jwt-token-doc.png** – Example of a JWT token returned after a successful login  
+- **sql-syntax-error-updated.png** – SQL syntax issue encountered while inserting into the cart
 
-1. `easyshop-ui-home.png` – Homepage UI with category filters and product cards  
-2. `add-to-cart-error.png` – Visual alert when a cart addition fails  
-3. `postman-401-error.png` – Postman error when JWT is missing or invalid  
-4. `postman-405-error.png` – Incorrect HTTP method used on endpoint  
-5. `jwt-token-doc.png` – Documentation showing JWT response after login  
-6. `sql-syntax-error-updated.png` – SQL syntax bug in DAO during testing
+> *(You can find these images in the `/screenshots` folder or download them [here]([#](https://github.com/YearUpSpring2025-AT/EasyShop-Api-Capstone/blob/main/easyshop-readme-images.zip) once hosted in the repository.)*
 
 ---
 
