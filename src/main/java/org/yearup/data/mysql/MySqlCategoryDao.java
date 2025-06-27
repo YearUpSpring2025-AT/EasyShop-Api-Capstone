@@ -54,8 +54,8 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     {
         String idByQuery = """
                 SELECT
-                category_id,
-                name,
+                category_id
+                name
                 description
                 FROM
                 categories
