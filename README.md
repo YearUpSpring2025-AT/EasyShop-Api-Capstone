@@ -99,7 +99,6 @@ Authorization: Bearer <your-token-here>
 | 401 Unauthorized | Make sure the user exists and is activated in the database |
 | 405 Method Not Allowed | Double-check the method type used in your request matches the controller annotation |
 | SQLSyntaxErrorException | Fix SQL string formatting or missing column/values in your DAO |
-| Spring dependency errors | Run `mvn clean install`, and verify `pom.xml` dependencies are intact |
 
 ---
 
