@@ -20,14 +20,59 @@ EasyShop is a full-stack e-commerce API built with **Spring Boot** and **MySQL**
 
 ```
 src
-├── configurations
-├── controllers
-├── data
-│   ├── dao
-│   └── mysql
-├── models
-├── security
-└── EasyshopApplication.java
+└── java
+    └── org.yearup
+        ├── configurations
+        │   └── DatabaseConfig.java           # Handles database connection
+        │
+        ├── controllers                       # REST endpoints for client/API
+        │   ├── AuthenticationController.java
+        │   ├── CategoriesController.java
+        │   ├── ProductsController.java
+        │   ├── ProfileController.java
+        │   └── ShoppingCartController.java
+        │
+        ├── data
+        │   ├── mysql                         # MySQL DAO implementations
+        │   │   ├── MySqlCategoryDao.java
+        │   │   ├── MySqlDaoBase.java
+        │   │   ├── MySqlProductDao.java
+        │   │   ├── MySqlProfileDao.java
+        │   │   ├── MySqlShoppingCartDao.java
+        │   │   └── MySqlUserDao.java
+        │   ├── CategoryDao.java              # DAO interfaces
+        │   ├── ProductDao.java
+        │   ├── ProfileDao.java
+        │   ├── ShoppingCartDao.java
+        │   └── UserDao.java
+        │
+        ├── models                            # Entity models & DTOs
+        │   ├── authentication
+        │   │   ├── Authority.java
+        │   │   ├── LoginDto.java
+        │   │   ├── LoginResponseDto.java
+        │   │   └── RegisterUserDto.java
+        │   ├── Category.java
+        │   ├── Product.java
+        │   ├── Profile.java
+        │   ├── ShoppingCart.java
+        │   ├── ShoppingCartItem.java
+        │   └── User.java
+        │
+        ├── security
+        │   └── jwt                           # JWT configuration
+        │       ├── JWTConfigurer.java
+        │       ├── JWTFilter.java
+        │       ├── TokenProvider.java
+        │       ├── JwtAccessDeniedHandler.java
+        │       ├── JwtAuthenticationEntryPoint.java
+        │       ├── SecurityUtils.java
+        │       ├── UserModelDetailsService.java
+        │       ├── UserNotActivatedException.java
+        │       └── WebSecurityConfig.java
+        │
+        └── EasyshopApplication.java          # Main Spring Boot launcher
+
 ```
 
 ---
