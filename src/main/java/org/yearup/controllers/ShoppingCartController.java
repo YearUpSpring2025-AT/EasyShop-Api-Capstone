@@ -111,4 +111,16 @@ public class ShoppingCartController
 
     }
 
+    @DeleteMapping("{productId}")
+    public ShoppingCart removeItem(Principal principal, @PathVariable int productId){
+        try {
+            String userName = principal.getName();
+            User user = userDao.getByUserName(userName);
+
+            shoppingCartDao.removeItem(user.getId(), productId);
+            return shoppingCartDao.getByUserId(user.getId());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
