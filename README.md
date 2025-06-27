@@ -34,7 +34,7 @@ src
 
 ## 🖼️ Screenshots
 
-You can download all screenshots [here](sandbox:/mnt/data/easyshop-readme-images-v2.zip) and upload them to your README or GitHub repo.
+You can download all screenshots [here](sandbox:/mnt/data/easyshop-readme-images.zip) and upload them to your README or GitHub repo.
 
 **Included Images:**
 
