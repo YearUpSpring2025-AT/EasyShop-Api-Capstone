@@ -43,7 +43,7 @@ Below are some screenshots highlighting the core functionality and challenges fa
 - **jwt-token-doc.png** – Example of a JWT token returned after a successful login  
 - **sql-syntax-error-updated.png** – SQL syntax issue encountered while inserting into the cart
 
-> *(You can find these images in the `/screenshots` folder or download them [here]([#](https://github.com/YearUpSpring2025-AT/EasyShop-Api-Capstone/blob/main/easyshop-readme-images.zip) once hosted in the repository.)*
+> *(You can find these images in the `/screenshots` folder or download them [here](https://github.com/YearUpSpring2025-AT/EasyShop-Api-Capstone/blob/main/easyshop-readme-images.zip) once hosted in the repository.)*
 
 ---
 
