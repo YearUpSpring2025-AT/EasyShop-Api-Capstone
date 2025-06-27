@@ -151,8 +151,8 @@ Authorization: Bearer <your-token-here>
 
 ```bash
 # 1. Clone this repository
-git clone https://github.com/your-username/easyshop-api-capstone.git
-cd easyshop-api-capstone
+git clone https://github.com/your-username/EasyShop-Api-Capstone.git
+cd EasyShop-Api-Capstone
 
 # 2. Import MySQL database using the provided SQL script
 
